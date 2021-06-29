@@ -20,7 +20,8 @@
                   {{ '#' + item.blog.blogTopicName }}
                 </router-link>
                 <div v-if="item.blog.blogPictures">
-                  <img v-for="(img, index) in item.blog.blogPictures.split('|')" :src="photoSrc(img)" style="width: 158px;height:158px;line-height: 158px;margin-left: 2px" >
+                  <img v-for="(img, index) in item.blog.blogPictures.split('|')" :src="photoSrc(img)"
+                       style="width: 158px;height:158px;line-height: 158px;margin-left: 2px">
                 </div>
               </div>
               <template slot="action">

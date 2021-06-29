@@ -12,7 +12,7 @@
             up.userName
           }}</span>
           <router-link :to="{name: 'Follows', params: {userId: up.userId}}"><p
-              style="margin-left: 120px; font-size: 18px">关注 {{follows.length}}</p></router-link>
+              style="margin-left: 120px; font-size: 18px">关注 {{ follows.length }}</p></router-link>
           <div v-if="userId != user.userId">
             <Button v-if="up.userIsFollowed" @click="deleteFollow" type="primary">已关注</Button>
             <Button v-else @click="addFollow" type="warning">+关注</Button>
@@ -24,7 +24,7 @@
           <List>
 
             <ListItem>
-              <router-link :to="{name: 'Home', params: {userId: follow.userId}}">
+              <router-link :to="{name: 'Home', params: {userId: follow.userId}}" style="width: 100px">
                 <ListItemMeta :avatar="photoSrc(follow.userAvatar)" :title="follow.userName" description=""/>
               </router-link>
               <span style="margin-left: 75%" v-if="up.userId == user.userId">

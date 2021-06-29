@@ -21,7 +21,7 @@
                     {{ '#' + item.blog.blogTopicName }}
                   </router-link>
                   <div v-if="item.blog.blogPictures">
-                    <img v-for="(img, index) in item.blog.blogPictures.split('|')" :src="photoSrc(img)"
+                    <img v-for="(img, index) in item.blog.blogPictures.split('|')" :src="photoSrc(img)" :key="index"
                          style="width: 158px;height:158px;line-height: 158px;margin-left: 2px">
                   </div>
                 </div>
@@ -114,8 +114,8 @@ export default {
 
         }).then(res => {
           if (res.data.status.code === 200) {
-            this.indexBlogs[index].blog.blogIsCollected = 1;
-            this.indexBlogs[index].blog.blogCollectionsCount += 1;
+            this.blogCollections[index].blog.blogIsCollected = 1;
+            this.blogCollections[index].blog.blogCollectionsCount += 1;
             this.$Notice.success({
               title: '收藏成功！'
             })
@@ -137,8 +137,8 @@ export default {
         }
       }).then(res => {
         if (res.data.status.code === 200) {
-          this.indexBlogs[index].blog.blogIsCollected = 0;
-          this.indexBlogs[index].blog.blogCollectionsCount -= 1;
+          this.blogCollections[index].blog.blogIsCollected = 0;
+          this.blogCollections[index].blog.blogCollectionsCount -= 1;
         } else {
           alert(res.data.status.msg);
         }
@@ -156,8 +156,8 @@ export default {
         }
       }).then(res => {
         if (res.data.status.code === 200) {
-          this.indexBlogs[index].blog.blogIsLiked = 1;
-          this.indexBlogs[index].blog.blogLikes += 1;
+          this.blogCollections[index].blog.blogIsLiked = 1;
+          this.blogCollections[index].blog.blogLikes += 1;
         } else {
           alert(res.data.status.msg);
         }
@@ -175,8 +175,8 @@ export default {
         }
       }).then(res => {
         if (res.data.status.code === 200) {
-          this.indexBlogs[index].blog.blogIsLiked = 0;
-          this.indexBlogs[index].blog.blogLikes -= 1;
+          this.blogCollections[index].blog.blogIsLiked = 0;
+          this.blogCollections[index].blog.blogLikes -= 1;
         } else {
           alert(res.data.status.msg);
         }
@@ -195,9 +195,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.title_color {
-  color: #2D8cF0;
-}
-</style>

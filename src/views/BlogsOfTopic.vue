@@ -6,50 +6,51 @@
     <Content style="margin: 1% 20% 1% 20%">
       <Input search v-model="key" size="large" placeholder="搜索微博 话题 博主"
              @on-search="$router.push({name: 'Search', query: {key: key}})"/>
-      <!--            <h2>{{blogs[0].blogTags[0].tagName}} 标签下的博客</h2>-->
-
       <Card style="margin-top: 10px">
         <span @click="$router.back(-1)" style="cursor: pointer;"><Icon type="ios-arrow-back"/>返回</span>
-        <h2 style="text-align: center">#{{blogs[0].blog.blogTopicName}}#</h2>
+        <h2 style="text-align: center">#{{ blogs[0].blog.blogTopicName }}#</h2>
       </Card>
-        <Card style="margin-top: 10px" v-for="(item, index) in  blogs" :key="index">
-          <div>
-            <List item-layout="vertical">
-              <ListItem>
+      <Card style="margin-top: 10px" v-for="(item, index) in  blogs" :key="index">
+        <div>
+          <List item-layout="vertical">
+            <ListItem>
+              <router-link :to="{name: 'Home', params: {userId: item.user.userId}}">
                 <ListItemMeta :avatar="photoSrc(item.user.userAvatar)" :title="item.user.userName" description=""/>
-                <div style="margin-left: 50px">
+              </router-link>
+              <div style="margin-left: 50px">
                 <span>{{ item.blog.blogContent }}</span>
                 <router-link :to="{name: 'BlogsOfTopic', params: {topicId: item.blog.blogTopicId}}">
                   {{ '#' + item.blog.blogTopicName }}
                 </router-link>
-                  <div v-if="item.blog.blogPictures">
-                    <img v-for="(img, index) in item.blog.blogPictures.split('|')" :src="photoSrc(img)" style="width: 158px;height:158px;line-height: 158px;margin-left: 2px" >
-                  </div>
+                <div v-if="item.blog.blogPictures">
+                  <img v-for="(img, index) in item.blog.blogPictures.split('|')" :src="photoSrc(img)" :key="index"
+                       style="width: 158px;height:158px;line-height: 158px;margin-left: 2px">
                 </div>
-                <template slot="action">
-                  <li>
-                    <Icon v-if="item.blog.blogIsCollected" type="ios-star"
-                          @click="deleteCollect(user.userId, item.user.userId, item.blog.blogId, index)"/>
-                    <Icon v-else type="ios-star-outline"
-                          @click="addCollect(user.userId, item.user.userId, item.blog.blogId, index)"/>
-                    {{ item.blog.blogCollectionsCount }}
-                  </li>
-                  <li>
-                    <Icon type="ios-chatbubbles-outline" @click="intoBlog(item.blog.blogId)"/>
-                    {{ item.blog.blogCommentsCount }}
-                  </li>
-                  <li>
-                    <Icon v-if="item.blog.blogIsLiked" type="ios-thumbs-up"
-                          @click="deleteLike(user.userId, item.blog.blogId, index)"/>
-                    <Icon v-else type="ios-thumbs-up-outline"
-                          @click="addLike(user.userId, item.blog.blogId, index)"/>
-                    {{ item.blog.blogLikes }}
-                  </li>
-                </template>
-              </ListItem>
-            </List>
-          </div>
-        </Card>
+              </div>
+              <template slot="action">
+                <li>
+                  <Icon v-if="item.blog.blogIsCollected" type="ios-star"
+                        @click="deleteCollect(user.userId, item.user.userId, item.blog.blogId, index)"/>
+                  <Icon v-else type="ios-star-outline"
+                        @click="addCollect(user.userId, item.user.userId, item.blog.blogId, index)"/>
+                  {{ item.blog.blogCollectionsCount }}
+                </li>
+                <li>
+                  <Icon type="ios-chatbubbles-outline" @click="intoBlog(item.blog.blogId)"/>
+                  {{ item.blog.blogCommentsCount }}
+                </li>
+                <li>
+                  <Icon v-if="item.blog.blogIsLiked" type="ios-thumbs-up"
+                        @click="deleteLike(user.userId, item.blog.blogId, index)"/>
+                  <Icon v-else type="ios-thumbs-up-outline"
+                        @click="addLike(user.userId, item.blog.blogId, index)"/>
+                  {{ item.blog.blogLikes }}
+                </li>
+              </template>
+            </ListItem>
+          </List>
+        </div>
+      </Card>
     </Content>
     <BackTop></BackTop>
     <Footer>
@@ -106,11 +107,11 @@ export default {
       })
     },
     addCollect(userId, upId, blogId, index) {
-      if (userId == upId){
+      if (userId == upId) {
         this.$Notice.warning({
           title: '不能收藏自己的微博！'
         })
-      }else {
+      } else {
         this.$axios({
           url: '/api/collection',
           method: 'POST',
@@ -190,7 +191,7 @@ export default {
         alert(error);
       })
     },
-    intoBlog(blogId){
+    intoBlog(blogId) {
       this.$router.push({name: 'Blog', params: {blogId: blogId}})
     }
   },

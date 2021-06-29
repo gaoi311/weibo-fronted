@@ -9,7 +9,7 @@
         <Form :model="formItem" :label-width="80" label-position="left">
           <input type="hidden" v-model="formItem.userId">
           <FormItem label="头像">
-            <Avatar :src="photoSrc(formItem.userAvatar)" style="width: 150px; height: 150px"/>
+            <Avatar :src="photoSrc(user.userAvatar)" style="width: 150px; height: 150px"/>
 <!--            <Upload action="" :before-upload="beforeUpload" style="display: inline; margin-left: 5%"-->
 <!--                    :format="['jpg','jpeg','png']" :max-size="1024" :on-format-error="handleFormatError"-->
 <!--                    :on-exceeded-size="handleMaxSize">-->
@@ -111,63 +111,12 @@ export default {
         alert(error);
       })
     },
-    handleFormatError(avatarFile) {
-      this.$Notice.warning({
-        title: '格式不正确',
-        desc: '图片格式不正确，请选择jpg或png格式的图片！'
-      });
-    },
-    handleMaxSize(avatarFile) {
-      this.$Notice.warning({
-        title: '超出大小限制',
-        desc: '文件  ' + avatarFile.name + ' 太大，请上传小于1M的文件！'
-      });
-    },
-    beforeUpload(avatarFile) {
-      this.avatarFile = avatarFile;
-      return false;
-    },
-    uploadAvatar() {
-      this.loadingStatus = true;
-      var formData = new FormData();
-      formData.append("userAvatar", this.avatarFile);
-      this.avatarFile = null;
-      this.$axios({
-        url: '/api/avatar/' + this.user.userId,
-        method: 'PUT',
-        data: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(res => {
-        if (res.data.status.code === 200) {
-          this.$Notice.success({
-            title: "头像修改成功！\n刷新试试吧！"
-          });
-          this.changeUserInfo({
-            user: {
-              userId: this.user.userId,
-              userName: this.user.userName,
-              userAvatar: res.data.data.userAvatar
-            }
-          });
-          // this.getInfo();
-        } else {
-          alert(res.data.status.msg);
-        }
-      }).catch(error => {
-        alert(error);
-      })
-    },
     saveInfo() {
-      // alert('111');
       var data = new FormData();
       data.append('userId', this.formItem.userId);
       data.append('userName', this.formItem.userName);
       data.append('userGender', this.formItem.userGender);
-      // alert('444');
       data.append('userBirth', this.jsDate2JavaDate(this.formItem.userBirth));
-      // alert('222');
       this.$axios({
         url: '/api/myinfo/' + this.user.userId,
         method: 'PUT',
@@ -176,7 +125,6 @@ export default {
           'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
         }
       }).then(res => {
-        // alert('333');
         if (res.data.status.code === 200) {
           this.$Notice.success({
             title: "信息修改成功"

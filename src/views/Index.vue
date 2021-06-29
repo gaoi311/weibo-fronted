@@ -13,48 +13,46 @@
         <Card style="margin-top: 10px">
           <Input v-model="blogContent" maxlength="100" show-word-limit type="textarea" placeholder="输入..."/>
           <div style="margin-top: 10px">
-              <div>
-                <el-upload
-                    :multiple="multiple"
-                    action="#"
-                    list-type="picture-card"
-                    :auto-upload="false"
-                    :http-request="uploadFile"
-                    ref="uploadPic"
-                    :limit="limit"
-                >
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-              </div>
-
+            <div>
+              <el-upload
+                  :multiple="multiple"
+                  action="#"
+                  list-type="picture-card"
+                  :auto-upload="false"
+                  :http-request="uploadFile"
+                  ref="uploadPic"
+                  :limit="limit"
+              >
+                <i class="el-icon-plus"></i>
+              </el-upload>
             </div>
-            <Row style="margin-top: 10px">
-              <Col span="1">
-                <Button type="primary" @click="addBlog">发表</Button>
-              </Col>
-              <Col span="4" offset="1">
-                <Button type="primary" style="margin-left: 10px" @click="drawer = true">话题#</Button>
-              </Col>
-              <Col span="12">
-                <Select
-                    v-if="drawer"
-                    v-model="topicQuery"
-                    filterable
-                    :label-in-value="true"
-                    :remote-method="remoteMethod"
-                    @on-select="selectTopic"
-                    placeholder="选择话题#"
-                    :loading="loading">
-                  <Option v-for="(option, index) in topicOptions" :value="option.topicId" :key="index">
-                    {{ option.topicName }}
-                  </Option>
-                </Select>
-              </Col>
-            </Row>
+
           </div>
+          <Row style="margin-top: 10px">
+            <Col span="1">
+              <Button type="primary" @click="addBlog">发表</Button>
+            </Col>
+            <Col span="4" offset="1">
+              <Button type="primary" style="margin-left: 10px" @click="drawer = true">话题#</Button>
+            </Col>
+            <Col span="12">
+              <Select
+                  v-if="drawer"
+                  v-model="topicQuery"
+                  filterable
+                  :label-in-value="true"
+                  :remote-method="remoteMethod"
+                  @on-select="selectTopic"
+                  placeholder="选择话题#"
+                  :loading="loading">
+                <Option v-for="(option, index) in topicOptions" :value="option.topicId" :key="index">
+                  {{ option.topicName }}
+                </Option>
+              </Select>
+            </Col>
+          </Row>
         </Card>
         <!--                博客列表卡片-->
-
         <Card style="margin-top: 10px" v-for="(item, index) in indexBlogs" :key="index">
           <div>
 
@@ -69,7 +67,7 @@
                     {{ '#' + item.blog.blogTopicName }}
                   </router-link>
                   <div v-if="item.blog.blogPictures">
-                    <img v-for="(img, index) in item.blog.blogPictures.split('|')" :src="photoSrc(img)"
+                    <img v-for="(img, index) in item.blog.blogPictures.split('|')" :src="photoSrc(img)" :key="index"
                          style="width: 158px;height:158px;line-height: 158px;margin-left: 2px">
                   </div>
                 </div>
@@ -349,9 +347,6 @@ export default {
     uploadFile(file) {
       this.formPicsAndContentData.append('file', file.file);
     }
-  },
-  mounted() {
-    this.uploadList = this.$refs.upload.fileList;
   },
   created() {
     this.$Loading.start();

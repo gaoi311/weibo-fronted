@@ -8,8 +8,11 @@
         <h2>个人主页</h2>
         <Card style="margin-top: 10px">
           <Avatar :src="photoSrc(up.userAvatar)" style="width: 100px; height: 100px"></Avatar>
-          <span style="margin-left: 20px; font-size: 20px">用户</span><span style="font-size: 24px">{{ up.userName }}</span>
-          <router-link :to="{name: 'Follows', params: {userId: up.userId}}"><p style="margin-left: 120px; font-size: 18px">关注 {{follows.length}}</p></router-link>
+          <span style="margin-left: 20px; font-size: 20px">用户</span><span style="font-size: 24px">{{
+            up.userName
+          }}</span>
+          <router-link :to="{name: 'Follows', params: {userId: up.userId}}"><p
+              style="margin-left: 120px; font-size: 18px">关注 {{ follows.length }}</p></router-link>
           <div v-if="userId != user.userId">
             <Button v-if="up.userIsFollowed" @click="deleteFollow" type="primary">已关注</Button>
             <Button v-else @click="addFollow" type="warning">+关注</Button>
@@ -22,19 +25,21 @@
               <ListItem>
                 <ListItemMeta :avatar="photoSrc(up.userAvatar)" :title="up.userName" description=""/>
                 <div style="margin-left: 50px">
-                <span>{{ blog.blogContent }}</span>
-                <router-link :to="{name: 'BlogsOfTopic', params: {topicId: blog.blogTopicId}}">
-                  {{ '#' + blog.blogTopicName }}
-                </router-link>
+                  <span>{{ blog.blogContent }}</span>
+                  <router-link :to="{name: 'BlogsOfTopic', params: {topicId: blog.blogTopicId}}">
+                    {{ '#' + blog.blogTopicName }}
+                  </router-link>
                   <div v-if="blog.blogPictures">
-                    <img v-for="(img, index) in blog.blogPictures.split('|')" :src="photoSrc(img)" style="width: 158px;height:158px;line-height: 158px;margin-left: 2px" >
+                    <img v-for="(img, index) in blog.blogPictures.split('|')" :src="photoSrc(img)" :key="index"
+                         style="width: 158px;height:158px;line-height: 158px;margin-left: 2px">
                   </div>
                 </div>
                 <template slot="action">
                   <li>
                     <Icon v-if="blog.blogIsCollected" type="ios-star"
                           @click="deleteCollect(user.userId, up.userId, blog.blogId, index)"/>
-                    <Icon v-else type="ios-star-outline" @click="addCollect(user.userId, up.userId, blog.blogId, index)"/>
+                    <Icon v-else type="ios-star-outline"
+                          @click="addCollect(user.userId, up.userId, blog.blogId, index)"/>
                     {{ blog.blogCollectionsCount }}
                   </li>
                   <li>
@@ -104,7 +109,7 @@ export default {
     getUserId() {
       this.userId = this.$route.params.userId;
     },
-    getFollows(){
+    getFollows() {
       this.$axios({
         url: '/api/follows/' + this.userId,
         method: 'GET'
@@ -154,11 +159,11 @@ export default {
       })
     },
     addCollect(userId, upId, blogId, index) {
-      if (userId == upId){
+      if (userId == upId) {
         this.$Notice.warning({
           title: '不能收藏自己的微博！'
         })
-      }else {
+      } else {
         this.$axios({
           url: '/api/collection',
           method: 'POST',
@@ -168,8 +173,8 @@ export default {
           }
         }).then(res => {
           if (res.data.status.code === 200) {
-            this.blogs[index].blog.blogIsCollected = 1;
-            this.blogs[index].blog.blogCollectionsCount += 1;
+            this.blogs[index].blogIsCollected = 1;
+            this.blogs[index].blogCollectionsCount += 1;
             this.$Notice.success({
               title: '收藏成功！'
             })
@@ -191,8 +196,8 @@ export default {
         }
       }).then(res => {
         if (res.data.status.code === 200) {
-          this.blogs[index].blog.blogIsCollected = 0;
-          this.blogs[index].blog.blogCollectionsCount -= 1;
+          this.blogs[index].blogIsCollected = 0;
+          this.blogs[index].blogCollectionsCount -= 1;
         } else {
           alert(res.data.status.msg);
         }
@@ -210,8 +215,8 @@ export default {
         }
       }).then(res => {
         if (res.data.status.code === 200) {
-          this.blogs[index].blog.blogIsLiked = 1;
-          this.blogs[index].blog.blogLikes += 1;
+          this.blogs[index].blogIsLiked = 1;
+          this.blogs[index].blogLikes += 1;
         } else {
           alert(res.data.status.msg);
         }
@@ -229,8 +234,8 @@ export default {
         }
       }).then(res => {
         if (res.data.status.code === 200) {
-          this.blogs[index].blog.blogIsLiked = 0;
-          this.blogs[index].blog.blogLikes -= 1;
+          this.blogs[index].blogIsLiked = 0;
+          this.blogs[index].blogLikes -= 1;
         } else {
           alert(res.data.status.msg);
         }
@@ -277,7 +282,7 @@ export default {
         alert(error);
       })
     },
-    intoBlog(blogId){
+    intoBlog(blogId) {
       this.$router.push({name: 'Blog', params: {blogId: blogId}})
     }
   },

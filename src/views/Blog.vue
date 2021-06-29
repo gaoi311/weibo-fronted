@@ -12,12 +12,13 @@
                 <ListItemMeta :avatar="photoSrc(blog.user.userAvatar)" :title="blog.user.userName" description=""/>
               </router-link>
               <div style="margin-left: 50px">
-              <span>{{ blog.blog.blogContent }}</span>
-              <router-link :to="{name: 'BlogsOfTopic', params: {topicId: blog.blog.blogTopicId}}">
-                {{ '#' + blog.blog.blogTopicName }}
-              </router-link>
+                <span>{{ blog.blog.blogContent }}</span>
+                <router-link :to="{name: 'BlogsOfTopic', params: {topicId: blog.blog.blogTopicId}}">
+                  {{ '#' + blog.blog.blogTopicName }}
+                </router-link>
                 <div v-if="blog.blog.blogPictures">
-                  <img v-for="(img, index) in blog.blog.blogPictures.split('|')" :src="photoSrc(img)" style="width: 158px;height:158px;line-height: 158px;margin-left: 2px" >
+                  <img v-for="(img, index) in blog.blog.blogPictures.split('|')" :src="photoSrc(img)"
+                       style="width: 158px;height:158px;line-height: 158px;margin-left: 2px">
                 </div>
               </div>
               <template slot="action">
@@ -29,7 +30,8 @@
                   {{ blog.blog.blogCollectionsCount }}
                 </li>
                 <li>
-                  <Icon type="ios-chatbubbles-outline" @click="this.$router.push({name: 'Blog', params: {blogId: blog.blog.blogId}})"/>
+                  <Icon type="ios-chatbubbles-outline"
+                        @click="this.$router.push({name: 'Blog', params: {blogId: blog.blog.blogId}})"/>
                   {{ blog.blog.blogCommentsCount }}
                 </li>
                 <li>
@@ -165,11 +167,11 @@ export default {
       }
     },
     addCollect(userId, upId, blogId) {
-      if (userId == upId){
+      if (userId == upId) {
         this.$Notice.warning({
           title: '不能收藏自己的微博！'
         })
-      }else {
+      } else {
         this.$axios({
           url: '/api/collection',
           method: 'POST',
@@ -249,43 +251,6 @@ export default {
         alert(error);
       })
     }
-    // collectBlog() {
-    //   var data = new FormData();
-    //   data.append('userId', this.user.userId);
-    //   data.append('blogId', this.blogId);
-    //   if (this.user && (this.user.userId !== this.blogInfo.user.userId) && !this.blogInfo.blog.blogIsCollected) {
-    //     this.$axios({
-    //       url: '/api/collection',
-    //       method: 'POST',
-    //       data: data,
-    //       headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-    //       }
-    //     }).then(res => {
-    //       if (res.data.status.code === 200) {
-    //         this.$Notice.success({
-    //           title: "收藏成功"
-    //         });
-    //       } else {
-    //         alert(res.data.status.msg);
-    //       }
-    //     }).catch(error => {
-    //       alert(error);
-    //     })
-    //   } else if (!this.user) {
-    //     this.$Notice.warning({
-    //       title: "需要登陆哦！"
-    //     });
-    //   } else if (this.user && this.blogInfo.blog.blogIsCollected) {
-    //     this.$Notice.warning({
-    //       title: "您已收藏过这篇博客了哦！"
-    //     });
-    //   } else if (this.user.userId === this.blogInfo.user.userId) {
-    //     this.$Notice.warning({
-    //       title: "您不能收藏自己的文章哦！"
-    //     });
-    //   }
-    // }
   },
   created() {
     this.$Loading.start();
